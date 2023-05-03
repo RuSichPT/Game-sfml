@@ -36,6 +36,19 @@ void Game::start()
 			if (event.type == Event::Closed)
 				// тогда закрываем его
 				window->close();
+
+			// Была ли нажата клавиша на клавиатуре?
+			if (event.type == Event::KeyPressed)
+			{
+				if (event.key.code == Keyboard::Left)
+					figure.move(-5,0);
+				else if (event.key.code == Keyboard::Right)
+					figure.move(5,0);
+				else if (event.key.code == Keyboard::Up)
+					figure.move(0, -5);
+				else if (event.key.code == Keyboard::Down)
+					figure.move(0, 5);
+			}
 		}
 
 		// Установка цвета фона - белый

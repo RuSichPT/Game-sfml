@@ -18,3 +18,8 @@ Figure::~Figure()
 	delete texture;
 	delete sprite;
 }
+
+void Figure::move(int dx, int dy)
+{
+	sprite->move(dx, dy);
+}

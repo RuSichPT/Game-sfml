@@ -16,6 +16,7 @@ public:
 	Figure(FigureColor color);
 	~Figure();
 
+	void move(int dx, int dy);
 	Sprite* getSprite() { return sprite; };
 private:
 	Texture* texture;
