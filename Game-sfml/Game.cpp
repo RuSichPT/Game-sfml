@@ -1,4 +1,5 @@
 #include "Game.h"
+#include "Figure.h"
 
 using namespace sf;
 
@@ -23,6 +24,8 @@ Game::~Game()
 
 void Game::start()
 {
+	Figure figure(FigureColor::BLACK);
+
 	while (window->isOpen())
 	{
 		// Обрабатываем события в цикле
@@ -39,6 +42,7 @@ void Game::start()
 		window->clear(Color::White);
 		// Отрисовка Бэкграунда
 		window->draw(*spriteBackground);
+		window->draw(*figure.getSprite());
 		// Отрисовка окна
 		window->display();
 	}

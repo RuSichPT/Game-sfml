@@ -1,4 +1,5 @@
 #pragma once
+
 #include <SFML/Graphics.hpp>
 
 #define WIDTH (8)
@@ -15,11 +16,11 @@ public:
 	~Game();
 	void start();
 
-private:	
-	RenderWindow *window;
-	Texture *background;
-	Sprite *spriteBackground;
- 
+private:
+	RenderWindow* window;
+	Texture* background;
+	Sprite* spriteBackground;
+
 	static int gameField[WIDTH][HIGHT];
 };
 
