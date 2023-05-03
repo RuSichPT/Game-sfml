@@ -1,10 +1,7 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
-
-#define WIDTH (8)
-#define HIGHT (8)
-#define SCALE (0.3)
+#include "Config.h"
 
 using namespace sf;
 

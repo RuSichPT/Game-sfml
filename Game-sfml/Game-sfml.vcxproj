@@ -154,7 +154,7 @@
     <Image Include="..\Images\white.png" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="config.h" />
+    <ClInclude Include="Config.h" />
     <ClInclude Include="EventHandler.h" />
     <ClInclude Include="Figure.h" />
     <ClInclude Include="Game.h" />

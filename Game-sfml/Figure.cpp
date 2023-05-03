@@ -1,6 +1,8 @@
 #include "Figure.h"
 
-Figure::Figure(FigureColor color)
+const Vector2f offset(40, 20);
+
+Figure::Figure(FigureColor color, Vector2f position)
 {
 	texture = new Texture();
 	if (color == WHITE)
@@ -9,8 +11,9 @@ Figure::Figure(FigureColor color)
 		texture->loadFromFile("..\\Images\\black.png");
 
 	sprite = new Sprite(*texture);
-	sprite->setScale(0.4,0.4);
-	sprite->setPosition(Vector2f(45, 20));
+	sprite->setScale(0.4, 0.4);
+	sprite->setPosition(position + offset);
+
 }
 
 Figure::~Figure()

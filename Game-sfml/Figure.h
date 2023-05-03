@@ -1,6 +1,7 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
+#include "Config.h"
 
 using namespace sf;
 
@@ -13,7 +14,7 @@ enum FigureColor
 class Figure
 {
 public:
-	Figure(FigureColor color);
+	Figure(FigureColor color, Vector2f position);
 	~Figure();
 
 	void move(int dx, int dy);

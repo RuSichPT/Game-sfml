@@ -7,7 +7,7 @@ Game::Game()
 {
 	background = new Texture();
 	background->loadFromFile("..\\Images\\board.jpg");
-	
+
 	spriteBackground = new Sprite(*background);
 	spriteBackground->setScale(SCALE, SCALE);
 
@@ -24,7 +24,9 @@ Game::~Game()
 
 void Game::start()
 {
-	Figure figure(FigureColor::BLACK);
+	int i = 7;
+	int j = 7;
+	Figure figure(FigureColor::BLACK, Vector2f(i * SIZE_CELL * SCALE, j * SIZE_CELL * SCALE));
 
 	while (window->isOpen())
 	{
@@ -41,9 +43,9 @@ void Game::start()
 			if (event.type == Event::KeyPressed)
 			{
 				if (event.key.code == Keyboard::Left)
-					figure.move(-5,0);
+					figure.move(-5, 0);
 				else if (event.key.code == Keyboard::Right)
-					figure.move(5,0);
+					figure.move(5, 0);
 				else if (event.key.code == Keyboard::Up)
 					figure.move(0, -5);
 				else if (event.key.code == Keyboard::Down)
