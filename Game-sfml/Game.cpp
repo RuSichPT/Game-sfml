@@ -42,12 +42,12 @@ void Game::start()
 	{
 		for (size_t j = 0; j < SIZE_Y; j++)
 		{
-			if (gameField[i][j] == 1)
+			if (gameField[i][j] == Cell::BLACK)
 			{
 				figuresBlack[black] = new Figure(FigureColor::BLACK, i, j);
 				black++;
 			}
-			if (gameField[i][j] == 2)
+			if (gameField[i][j] == Cell::WHITE)
 			{
 				figuresWhite[white] = new Figure(FigureColor::WHITE, i, j);
 				white++;
@@ -57,7 +57,7 @@ void Game::start()
 
 	int currentX = 0xFFFF;
 	int currentY = 0xFFFF;
-	int current = 0;
+	Cell current = Cell::EMPTY;
 	while (window->isOpen())
 	{
 		//EventHandler handler;
@@ -79,13 +79,13 @@ void Game::start()
 					int numCell_x = event.mouseButton.x / SIZE_CELL;
 					int numCell_y = event.mouseButton.y / SIZE_CELL;
 
-					if (current == 1 || current == 2)
+					if (current == Cell::BLACK || current == Cell::WHITE)
 					{
-						if (gameField[numCell_x][numCell_y] == 0)
+						if (gameField[numCell_x][numCell_y] == Cell::EMPTY)
 						{
-							gameField[currentX][currentY] = 0;
+							gameField[currentX][currentY] = Cell::EMPTY;
 							gameField[numCell_x][numCell_y] = current;
-							current = 0;
+							current = Cell::EMPTY;
 						}
 					}
 					else
@@ -116,12 +116,12 @@ void Game::start()
 		{
 			for (size_t j = 0; j < SIZE_Y; j++)
 			{
-				if (gameField[i][j] == 1)
+				if (gameField[i][j] == Cell::BLACK)
 				{
 					figuresBlack[black]->setPosition(i, j);
 					black++;
 				}
-				if (gameField[i][j] == 2)
+				if (gameField[i][j] == Cell::WHITE)
 				{
 					figuresWhite[white]->setPosition(i, j);
 					white++;
@@ -150,22 +150,22 @@ RenderWindow* Game::getWindow()
 	return window;
 }
 
-void Game::setSelected(Cell cell)
+void Game::setSelected(Cell_struct cell)
 {
 	selectedCell = cell;
 }
 
-Cell Game::getSelectedCell()
+Cell_struct Game::getSelectedCell()
 {
 	return selectedCell;
 }
 
-void Game::setGameField(int numX, int numY, int value)
+void Game::setGameField(int numX, int numY, Cell value)
 {
 	gameField[numX][numY] = value;
 }
 
-int Game::getGameField(int numX, int numY)
+Cell Game::getGameField(int numX, int numY)
 {
 	return gameField[numX][numY];
 }
@@ -176,7 +176,7 @@ void Game::printGameField()
 	{
 		for (size_t i = 0; i < SIZE_X; i++)
 		{
-			cout << " " << gameField[i][j];
+			cout << " " << (int)gameField[i][j];
 		}
 		cout << endl;
 	}
@@ -185,22 +185,11 @@ void Game::printGameField()
 
 void Game::initGameField(int numFigures)
 {
-	//for (int64_t i = 0; i < WIDTH; i++)
-	//{
-	//	for (int64_t j = 0; j < HIGHT; j++)
-	//	{
-	//		gameField[i][j].x1 = SIZE_BORDER + i * SIZE_CELL;
-	//		gameField[i][j].x2 = SIZE_BORDER + (i + 1) * SIZE_CELL;
-	//		gameField[i][j].y1 = SIZE_BORDER + j * SIZE_CELL;
-	//		gameField[i][j].y2 = SIZE_BORDER + (j + 1) * SIZE_CELL;
-	//	}
-	//}
-
 	for (size_t i = 0; i < numFigures; i++)
 	{
 		for (size_t j = 0; j < numFigures; j++)
 		{
-			gameField[i][j] = 1;
+			gameField[i][j] = Cell::BLACK;
 		}
 	}
 
@@ -208,7 +197,7 @@ void Game::initGameField(int numFigures)
 	{
 		for (size_t j = SIZE_Y - numFigures; j < SIZE_Y; j++)
 		{
-			gameField[i][j] = 2;
+			gameField[i][j] = Cell::WHITE;
 		}
 	}
 }

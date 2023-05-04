@@ -16,17 +16,17 @@ void EventHandler::start(Game* game)
 				int newNumCellX = event.mouseButton.x / SIZE_CELL;
 				int newNumCellY = event.mouseButton.y / SIZE_CELL;
 				
-				Cell selectedCell = game->getSelectedCell();
+				Cell_struct selectedCell = game->getSelectedCell();
 
 				if (selectedCell.hasFigure)
 				{
-					game->setGameField(selectedCell.numCellX, selectedCell.numCellY, 0);
-					game->setGameField(newNumCellX, newNumCellY, 1);
+					game->setGameField(selectedCell.numCellX, selectedCell.numCellY, Cell::EMPTY);
+					game->setGameField(newNumCellX, newNumCellY, Cell::BLACK);
 					selectedCell.hasFigure = 0;
 				}
 				else
 				{
-					selectedCell.hasFigure = game->getGameField(newNumCellX, newNumCellY);
+					//selectedCell.hasFigure = game->getGameField(newNumCellX, newNumCellY);
 					selectedCell.numCellX = newNumCellX;
 					selectedCell.numCellY = newNumCellY;
 				}
