@@ -20,9 +20,11 @@ public:
 	void move(int dx, int dy);
 	void setPosition(int numCellX, int numCellY);
 	Sprite* getSprite() { return sprite; };
+	FigureColor getColor() { return color; };
 private:
 	Texture* texture;
 	Sprite* sprite;
+	FigureColor color;
 
 	int numCellX;
 	int numCellY;

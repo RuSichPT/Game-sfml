@@ -33,22 +33,24 @@ Game::~Game()
 
 void Game::start()
 {
-	Figure* figures[2 * NUM_FIGURES * NUM_FIGURES] = { nullptr };
+	Figure* figuresBlack[ NUM_FIGURES * NUM_FIGURES] = { nullptr };
+	Figure* figuresWhite[NUM_FIGURES * NUM_FIGURES] = { nullptr };
 
-	int k = 0;
+	int black = 0;
+	int white = 0;
 	for (size_t i = 0; i < SIZE_X; i++)
 	{
 		for (size_t j = 0; j < SIZE_Y; j++)
 		{
 			if (gameField[i][j] == 1)
 			{
-				figures[k] = new Figure(FigureColor::BLACK, i, j);
-				k++;
+				figuresBlack[black] = new Figure(FigureColor::BLACK, i, j);
+				black++;
 			}
 			if (gameField[i][j] == 2)
 			{
-				figures[k] = new Figure(FigureColor::WHITE, i, j);
-				k++;
+				figuresWhite[white] = new Figure(FigureColor::WHITE, i, j);
+				white++;
 			}
 		}
 	}
@@ -79,9 +81,12 @@ void Game::start()
 
 					if (current == 1 || current == 2)
 					{
-						gameField[currentX][currentY] = 0;
-						gameField[numCell_x][numCell_y] = current;
-						current = 0;
+						if (gameField[numCell_x][numCell_y] == 0)
+						{
+							gameField[currentX][currentY] = 0;
+							gameField[numCell_x][numCell_y] = current;
+							current = 0;
+						}
 					}
 					else
 					{
@@ -105,35 +110,38 @@ void Game::start()
 		// Отрисовка Бэкграунда
 		window->draw(*spriteBackground);
 
-		int k = 0;
+		int black = 0;
+		int white = 0;
 		for (size_t i = 0; i < SIZE_X; i++)
 		{
 			for (size_t j = 0; j < SIZE_Y; j++)
 			{
 				if (gameField[i][j] == 1)
 				{
-					figures[k]->setPosition(i, j);
-					k++;
+					figuresBlack[black]->setPosition(i, j);
+					black++;
 				}
 				if (gameField[i][j] == 2)
 				{
-					figures[k]->setPosition(i, j);
-					k++;
+					figuresWhite[white]->setPosition(i, j);
+					white++;
 				}
 			}
 		}
 
-		for (size_t i = 0; i < 2 * NUM_FIGURES * NUM_FIGURES; i++)
+		for (size_t i = 0; i < NUM_FIGURES * NUM_FIGURES; i++)
 		{
-			window->draw(*figures[i]->getSprite());
+			window->draw(*figuresBlack[i]->getSprite());
+			window->draw(*figuresWhite[i]->getSprite());
 		}
 		// Отрисовка окна
 		window->display();
 	}
 
-	for (size_t i = 0; i < 2 * NUM_FIGURES * NUM_FIGURES; i++)
+	for (size_t i = 0; i < NUM_FIGURES * NUM_FIGURES; i++)
 	{
-		delete figures[i];
+		delete figuresBlack[i];
+		delete figuresWhite[i];
 	}
 }
 
