@@ -3,11 +3,13 @@
 
 void EventHandler::start(Game* game)
 {
-	while (game->getWindow()->pollEvent(event))
+	RenderWindow* window = game->getGameView()->getRenderWindow();
+
+	while (window->pollEvent(event))
 	{
 		if (event.type == Event::Closed)
 		{
-			game->getWindow()->close();
+			window->close();
 		}
 		else if (event.type == Event::MouseButtonPressed)
 		{
@@ -15,7 +17,7 @@ void EventHandler::start(Game* game)
 			{
 				int newNumCellX = event.mouseButton.x / SIZE_CELL;
 				int newNumCellY = event.mouseButton.y / SIZE_CELL;
-				
+
 				Cell_struct selectedCell = game->getSelectedCell();
 
 				if (selectedCell.hasFigure)

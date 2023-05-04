@@ -6,3 +6,10 @@
 #define SIZE_CELL (278*SCALE)
 #define SIZE_BORDER (66*SCALE)
 #define NUM_FIGURES (3)
+
+enum class Cell
+{
+	EMPTY,
+	BLACK,
+	WHITE
+};

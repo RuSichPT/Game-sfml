@@ -11,66 +11,33 @@ Game::Game()
 	initGameField(NUM_FIGURES);
 	printGameField();
 
-	background = new Texture();
-	background->loadFromFile("..\\Images\\board.jpg");
-
-	spriteBackground = new Sprite(*background);
-	spriteBackground->setScale(SCALE, SCALE);
-
-	sizeField = background->getSize();
-	sizeField.x = unsigned int(sizeField.x * SCALE);
-	sizeField.y = unsigned int(sizeField.y * SCALE);
-
-	window = new RenderWindow(VideoMode(sizeField.x, sizeField.y), "The Game!");
+	Cell* p = &gameField[0][0];
+	view = new GameView(&p);
 }
 
 Game::~Game()
 {
-	delete spriteBackground;
-	delete background;
-	delete window;
+	delete view;
 }
 
 void Game::start()
 {
-	Figure* figuresBlack[ NUM_FIGURES * NUM_FIGURES] = { nullptr };
-	Figure* figuresWhite[NUM_FIGURES * NUM_FIGURES] = { nullptr };
-
-	int black = 0;
-	int white = 0;
-	for (size_t i = 0; i < SIZE_X; i++)
-	{
-		for (size_t j = 0; j < SIZE_Y; j++)
-		{
-			if (gameField[i][j] == Cell::BLACK)
-			{
-				figuresBlack[black] = new Figure(FigureColor::BLACK, i, j);
-				black++;
-			}
-			if (gameField[i][j] == Cell::WHITE)
-			{
-				figuresWhite[white] = new Figure(FigureColor::WHITE, i, j);
-				white++;
-			}
-		}
-	}
-
 	int currentX = 0xFFFF;
 	int currentY = 0xFFFF;
 	Cell current = Cell::EMPTY;
-	while (window->isOpen())
+	while (view->getRenderWindow()->isOpen())
 	{
 		//EventHandler handler;
 		//handler.start(this);
 
 		// Обрабатываем события в цикле
 		Event event;
-		while (window->pollEvent(event))
+		while (view->getRenderWindow()->pollEvent(event))
 		{
 			// Пользователь нажал на «крестик» и хочет закрыть окно?
 			if (event.type == Event::Closed)
 				// тогда закрываем его
-				window->close();
+				view->getRenderWindow()->close();
 
 			if (event.type == Event::MouseButtonPressed)
 			{
@@ -105,50 +72,10 @@ void Game::start()
 			}
 		}
 
-		// Установка цвета фона - белый
-		window->clear(Color::White);
-		// Отрисовка Бэкграунда
-		window->draw(*spriteBackground);
-
-		int black = 0;
-		int white = 0;
-		for (size_t i = 0; i < SIZE_X; i++)
-		{
-			for (size_t j = 0; j < SIZE_Y; j++)
-			{
-				if (gameField[i][j] == Cell::BLACK)
-				{
-					figuresBlack[black]->setPosition(i, j);
-					black++;
-				}
-				if (gameField[i][j] == Cell::WHITE)
-				{
-					figuresWhite[white]->setPosition(i, j);
-					white++;
-				}
-			}
-		}
-
-		for (size_t i = 0; i < NUM_FIGURES * NUM_FIGURES; i++)
-		{
-			window->draw(*figuresBlack[i]->getSprite());
-			window->draw(*figuresWhite[i]->getSprite());
-		}
-		// Отрисовка окна
-		window->display();
-	}
-
-	for (size_t i = 0; i < NUM_FIGURES * NUM_FIGURES; i++)
-	{
-		delete figuresBlack[i];
-		delete figuresWhite[i];
+		view->drow();
 	}
 }
 
-RenderWindow* Game::getWindow()
-{
-	return window;
-}
 
 void Game::setSelected(Cell_struct cell)
 {
