@@ -1,10 +1,12 @@
 #include "EventHandler.h"
 #include "Config.h"
+#include "Game.h"
 
-void EventHandler::start(Game* game)
+void EventHandler::handle()
 {
 	RenderWindow* window = game->getGameView()->getRenderWindow();
 
+	Event event;
 	while (window->pollEvent(event))
 	{
 		if (event.type == Event::Closed)
@@ -18,35 +20,33 @@ void EventHandler::start(Game* game)
 				int newNumCellX = event.mouseButton.x / SIZE_CELL;
 				int newNumCellY = event.mouseButton.y / SIZE_CELL;
 
-				Cell_struct selectedCell = game->getSelectedCell();
+				SelectedCell selectedCell = game->getSelectedCell();
 
-				if (selectedCell.hasFigure)
+				if (selectedCell.cell != Cell::EMPTY)
 				{
-					game->setGameField(selectedCell.numCellX, selectedCell.numCellY, Cell::EMPTY);
-					game->setGameField(newNumCellX, newNumCellY, Cell::BLACK);
-					selectedCell.hasFigure = 0;
+					if (game->getGameField(newNumCellX, newNumCellY) == Cell::EMPTY)
+					{
+						game->setGameField(selectedCell.numCellX, selectedCell.numCellY, Cell::EMPTY);
+						game->setGameField(newNumCellX, newNumCellY, selectedCell.cell);
+						selectedCell.cell = Cell::EMPTY;
+					}
 				}
 				else
 				{
-					//selectedCell.hasFigure = game->getGameField(newNumCellX, newNumCellY);
+					selectedCell.cell = game->getGameField(newNumCellX, newNumCellY);
 					selectedCell.numCellX = newNumCellX;
 					selectedCell.numCellY = newNumCellY;
 				}
+
 				game->setSelected(selectedCell);
 				game->printGameField();
 			}
 		}
-		//// Была ли нажата клавиша на клавиатуре?
-		//if (event.type == Event::KeyPressed)
-		//{
-		//	if (event.key.code == Keyboard::Left)
-		//		figure.move(-5, 0);
-		//	else if (event.key.code == Keyboard::Right)
-		//		figure.move(5, 0);
-		//	else if (event.key.code == Keyboard::Up)
-		//		figure.move(0, -5);
-		//	else if (event.key.code == Keyboard::Down)
-		//		figure.move(0, 5);
-		//}
 	}
 }
+
+EventHandler::EventHandler(Game* game)
+{
+	this->game = game;
+}
+

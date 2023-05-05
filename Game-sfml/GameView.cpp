@@ -1,8 +1,10 @@
 #include "GameView.h"
+#include "Game.h" 
 
-GameView::GameView(Cell** gameField)
+GameView::GameView(Game* game)
 {
-	this->gameField = gameField;
+	this->game = game;
+
 	initBackground();
 	initRenderWindow();
 	initFigures();
@@ -32,7 +34,7 @@ void GameView::drow()
 	{
 		for (size_t j = 0; j < SIZE_Y; j++)
 		{
-			Cell cell = gameField[i][j];
+			Cell cell = game->getGameField(i, j);
 			if (cell == Cell::BLACK)
 			{
 				figuresBlack[black]->setPosition(i, j);
@@ -51,7 +53,7 @@ void GameView::drow()
 		window->draw(*figuresBlack[i]->getSprite());
 		window->draw(*figuresWhite[i]->getSprite());
 	}
-	// Отрисовка окна
+
 	window->display();
 }
 
@@ -80,7 +82,7 @@ void GameView::initFigures()
 	{
 		for (size_t j = 0; j < SIZE_Y; j++)
 		{
-			Cell cell = gameField[i][j];
+			Cell cell = game->getGameField(i, j);
 			if (cell == Cell::BLACK)
 			{
 				figuresBlack[black] = new Figure(FigureColor::BLACK, i, j);

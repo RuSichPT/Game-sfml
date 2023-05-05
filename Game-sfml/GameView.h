@@ -4,22 +4,23 @@
 #include "Figure.h"
 #include "Config.h"
 
+class Game;
 
 using namespace sf;
 
 class GameView
 {
 public:
-	GameView(Cell** gameField);
+	GameView(Game* game);
 	~GameView();
 	void drow();
 
 	RenderWindow* getRenderWindow() { return window; }
 private:
+	Game* game;
 	RenderWindow* window;
 	Texture* background;
 	Sprite* spriteBackground;
-	Cell** gameField;
 
 	Figure* figuresBlack[NUM_FIGURES * NUM_FIGURES] = { nullptr };
 	Figure* figuresWhite[NUM_FIGURES * NUM_FIGURES] = { nullptr };

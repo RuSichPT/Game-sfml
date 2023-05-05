@@ -5,7 +5,7 @@ const Vector2f offset(40, 20);
 Figure::Figure(FigureColor color, int numCellX, int numCellY)
 {
 	texture = new Texture();
-	if (color == WHITE)
+	if (color == FigureColor::WHITE)
 		texture->loadFromFile("..\\Images\\white.png");
 	else
 		texture->loadFromFile("..\\Images\\black.png");
@@ -29,7 +29,7 @@ void Figure::move(int dx, int dy)
 	sprite->move(dx, dy);
 }
 
-void Figure::setPosition(int numCellX, int numCellY)
+void Figure::setPosition(int newNumCellX, int newNumCellY)
 {
-	sprite->setPosition(Vector2f(numCellX * SIZE_CELL, numCellY * SIZE_CELL) + offset);
+	sprite->setPosition(Vector2f(newNumCellX * SIZE_CELL, newNumCellY * SIZE_CELL) + offset);
 }

@@ -1,15 +1,18 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
-#include "Game.h"
 
 using namespace sf;
+
+class Game;
 
 class EventHandler
 {
 public:
-	void start(Game* game);
+	EventHandler(Game* game);
+
+	void handle();
 private:
-	Event event;
+	Game* game;
 };
 
