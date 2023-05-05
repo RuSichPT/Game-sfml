@@ -17,7 +17,6 @@ public:
 	Figure(FigureColor color, int numCellX, int numCellY);
 	~Figure();
 
-	void move(int dx, int dy);
 	void setPosition(int newNumCellX, int newNumCellY);
 	Sprite* getSprite() { return sprite; };
 	FigureColor getColor() { return color; };

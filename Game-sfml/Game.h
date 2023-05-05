@@ -7,11 +7,11 @@
 
 using namespace sf;
 
-struct SelectedCell
+struct Cell
 {
-	int numCellX = 0xFFFFFFFF;
-	int numCellY = 0xFFFFFFFF;
-	Cell cell = Cell::EMPTY;
+	int x = 0xFFFFFFFF;
+	int y = 0xFFFFFFFF;
+	CellValue value = CellValue::EMPTY;
 };
 
 class Game
@@ -21,19 +21,24 @@ public:
 	~Game();
 
 	void start();
+	void moveFigure(Cell from, Cell to);
 	void printGameField();
+	bool isEnd();
 
-	void setSelected(SelectedCell cell) { selectedCell = cell; }
-	SelectedCell getSelectedCell() { return selectedCell; }
-	void setGameField(int numX, int numY, Cell value) { gameField[numX][numY] = value; }
-	Cell getGameField(int numX, int numY) { return gameField[numX][numY]; }
+	void setSelectedCell(Cell cell) { selectedCell = cell; }
+	Cell getSelectedCell() { return selectedCell; }
+	void setGameField(int numX, int numY, CellValue value) { gameField[numX][numY] = value; }
+	CellValue getGameField(int numX, int numY) { return gameField[numX][numY]; }
 	GameView* getGameView() { return view; }
+	FigureColor getWinner() { return winner; }
 private:
 	GameView* view;
 	EventHandler* handler;
-	SelectedCell selectedCell;
-	Cell gameField[SIZE_X][SIZE_Y] = { Cell::EMPTY };
+	Cell selectedCell;
+	CellValue gameField[SIZE_X][SIZE_Y] = { CellValue::EMPTY };
+	FigureColor winner;
 
-	void initGameField(int numFigures);
+	bool canMove(Cell from, Cell to);
+	void initGameField();
 };
 

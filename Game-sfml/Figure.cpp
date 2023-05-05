@@ -24,11 +24,6 @@ Figure::~Figure()
 	delete sprite;
 }
 
-void Figure::move(int dx, int dy)
-{
-	sprite->move(dx, dy);
-}
-
 void Figure::setPosition(int newNumCellX, int newNumCellY)
 {
 	sprite->setPosition(Vector2f(newNumCellX * SIZE_CELL, newNumCellY * SIZE_CELL) + offset);

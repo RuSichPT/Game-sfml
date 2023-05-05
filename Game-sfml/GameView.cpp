@@ -26,32 +26,60 @@ GameView::~GameView()
 void GameView::drow()
 {
 	window->clear(Color::White);
-	window->draw(*spriteBackground);
 
-	int black = 0;
-	int white = 0;
-	for (size_t i = 0; i < SIZE_X; i++)
+	if (!game->isEnd())
 	{
-		for (size_t j = 0; j < SIZE_Y; j++)
+		window->draw(*spriteBackground);
+
+		int black = 0;
+		int white = 0;
+		for (size_t i = 0; i < SIZE_X; i++)
 		{
-			Cell cell = game->getGameField(i, j);
-			if (cell == Cell::BLACK)
+			for (size_t j = 0; j < SIZE_Y; j++)
 			{
-				figuresBlack[black]->setPosition(i, j);
-				black++;
-			}
-			if (cell == Cell::WHITE)
-			{
-				figuresWhite[white]->setPosition(i, j);
-				white++;
+				CellValue cell = game->getGameField(i, j);
+				if (cell == CellValue::BLACK)
+				{
+					figuresBlack[black]->setPosition(i, j);
+					black++;
+				}
+				if (cell == CellValue::WHITE)
+				{
+					figuresWhite[white]->setPosition(i, j);
+					white++;
+				}
 			}
 		}
-	}
 
-	for (size_t i = 0; i < NUM_FIGURES * NUM_FIGURES; i++)
+		for (size_t i = 0; i < NUM_FIGURES * NUM_FIGURES; i++)
+		{
+			window->draw(*figuresBlack[i]->getSprite());
+			window->draw(*figuresWhite[i]->getSprite());
+		}
+	}
+	else
 	{
-		window->draw(*figuresBlack[i]->getSprite());
-		window->draw(*figuresWhite[i]->getSprite());
+		window->setSize(Vector2u(SIZE_FINISH_WINDOW, SIZE_FINISH_WINDOW));
+
+		Font font;
+		if (font.loadFromFile("..\\Fonts\\Times_New_Roman.ttf"))
+		{
+			String strWinner;
+			if (game->getWinner() == FigureColor::WHITE)
+				strWinner = "White is the winner";
+			else
+				strWinner = "Black is the winner";
+
+			Text text(strWinner,font);
+			text.setPosition(90, 200);
+			text.setCharacterSize(70);
+			text.setFillColor(sf::Color::Black);
+			window->draw(text);
+		}
+		else
+		{
+			throw "Don't load font";
+		}
 	}
 
 	window->display();
@@ -82,13 +110,13 @@ void GameView::initFigures()
 	{
 		for (size_t j = 0; j < SIZE_Y; j++)
 		{
-			Cell cell = game->getGameField(i, j);
-			if (cell == Cell::BLACK)
+			CellValue cell = game->getGameField(i, j);
+			if (cell == CellValue::BLACK)
 			{
 				figuresBlack[black] = new Figure(FigureColor::BLACK, i, j);
 				black++;
 			}
-			else if (cell == Cell::WHITE)
+			else if (cell == CellValue::WHITE)
 			{
 				figuresWhite[white] = new Figure(FigureColor::WHITE, i, j);
 				white++;

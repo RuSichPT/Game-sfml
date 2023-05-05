@@ -141,6 +141,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Ai.cpp" />
     <ClCompile Include="EventHandler.cpp" />
     <ClCompile Include="Figure.cpp" />
     <ClCompile Include="Game.cpp" />
@@ -153,6 +154,7 @@
     <Image Include="..\Images\white.png" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Ai.h" />
     <ClInclude Include="Config.h" />
     <ClInclude Include="EventHandler.h" />
     <ClInclude Include="Figure.h" />

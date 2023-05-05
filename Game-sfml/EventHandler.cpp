@@ -17,28 +17,22 @@ void EventHandler::handle()
 		{
 			if (event.mouseButton.button == Mouse::Left)
 			{
-				int newNumCellX = event.mouseButton.x / SIZE_CELL;
-				int newNumCellY = event.mouseButton.y / SIZE_CELL;
+				Cell to;
+				to.x = event.mouseButton.x / SIZE_CELL;
+				to.y = event.mouseButton.y / SIZE_CELL;
+				to.value = game->getGameField(to.x, to.y);
 
-				SelectedCell selectedCell = game->getSelectedCell();
-
-				if (selectedCell.cell != Cell::EMPTY)
+				Cell from = game->getSelectedCell();
+				if (from.value != CellValue::EMPTY)
 				{
-					if (game->getGameField(newNumCellX, newNumCellY) == Cell::EMPTY)
-					{
-						game->setGameField(selectedCell.numCellX, selectedCell.numCellY, Cell::EMPTY);
-						game->setGameField(newNumCellX, newNumCellY, selectedCell.cell);
-						selectedCell.cell = Cell::EMPTY;
-					}
+					game->moveFigure(from, to);
+					from.value = CellValue::EMPTY;
 				}
 				else
 				{
-					selectedCell.cell = game->getGameField(newNumCellX, newNumCellY);
-					selectedCell.numCellX = newNumCellX;
-					selectedCell.numCellY = newNumCellY;
+					memcpy(&from, &to, sizeof(Cell));
 				}
-
-				game->setSelected(selectedCell);
+				game->setSelectedCell(from);
 				game->printGameField();
 			}
 		}
