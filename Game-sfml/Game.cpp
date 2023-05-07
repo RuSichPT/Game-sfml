@@ -13,12 +13,14 @@ Game::Game()
 
 	view = new GameView(this);
 	handler = new EventHandler(this);
+	ai = new Ai(this);
 }
 
 Game::~Game()
 {
 	delete view;
 	delete handler;
+	delete ai;
 }
 
 void Game::start()
@@ -26,17 +28,20 @@ void Game::start()
 	while (view->getRenderWindow()->isOpen())
 	{
 		handler->handle();
+		ai->act();
 		view->drow();
 	}
 }
 
-void Game::moveFigure(Cell from, Cell to)
+bool Game::moveFigure(Cell from, Cell to)
 {
 	if (canMove(from, to))
 	{
 		gameField[from.x][from.y] = CellValue::EMPTY;
 		gameField[to.x][to.y] = from.value;
+		return true;
 	}
+	return false;
 }
 
 void Game::printGameField()

@@ -4,15 +4,9 @@
 #include "Config.h"
 #include "GameView.h"
 #include "EventHandler.h"
+#include "Ai.h"
 
 using namespace sf;
-
-struct Cell
-{
-	int x = 0xFFFFFFFF;
-	int y = 0xFFFFFFFF;
-	CellValue value = CellValue::EMPTY;
-};
 
 class Game
 {
@@ -21,7 +15,8 @@ public:
 	~Game();
 
 	void start();
-	void moveFigure(Cell from, Cell to);
+	bool canMove(Cell from, Cell to);
+	bool moveFigure(Cell from, Cell to);
 	void printGameField();
 	bool isEnd();
 
@@ -31,14 +26,19 @@ public:
 	CellValue getGameField(int numX, int numY) { return gameField[numX][numY]; }
 	GameView* getGameView() { return view; }
 	FigureColor getWinner() { return winner; }
+	void setNextMove(NextMove nextMove) { this->nextMove = nextMove; }
+	NextMove getNextMove() { return nextMove; }
+
 private:
 	GameView* view;
 	EventHandler* handler;
+	Ai* ai;
 	Cell selectedCell;
 	CellValue gameField[SIZE_X][SIZE_Y] = { CellValue::EMPTY };
 	FigureColor winner;
+	NextMove nextMove = NextMove::PLAYER;
 
-	bool canMove(Cell from, Cell to);
+
 	void initGameField();
 };
 
