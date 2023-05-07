@@ -3,10 +3,12 @@
 #include <SFML/Graphics.hpp>
 #include "Figure.h"
 #include "Config.h"
+#include <vector>
 
 class Game;
 
 using namespace sf;
+using namespace std;
 
 class GameView
 {
@@ -28,5 +30,7 @@ private:
 	void initBackground();
 	void initRenderWindow();
 	void initFigures();
+	void drowFigures();
+	void drowFinishWindow();
 };
 

@@ -15,7 +15,6 @@ public:
 	~Game();
 
 	void start();
-	bool canMove(Cell from, Cell to);
 	bool moveFigure(Cell from, Cell to);
 	void printGameField();
 	bool isEnd();
@@ -39,6 +38,7 @@ private:
 	NextMove nextMove = NextMove::PLAYER;
 
 
+	bool canMove(Cell from, Cell to);
 	void initGameField();
 };
 

@@ -2,6 +2,7 @@
 #include "Game.h"
 #include "Config.h"
 #include <ctime>
+#include <array>
 
 constexpr int NUM_DIRECTIONS = 4;
 constexpr int MAX_WEIGHT = SIZE_X * SIZE_Y * 2;
@@ -30,11 +31,24 @@ void Ai::selectCell(Cell* from, Cell* to)
 
 	while (true)
 	{
+		if (isAllMaxWeight(weights))
+		{
+			searchFirstEmpty(*from, *to);
+			break;
+		}
+
 		int iMinFrom = minIndex(weights);
 		memcpy(from, &weights.at(iMinFrom).cell, sizeof(Cell));
 		int weightFrom = weights.at(iMinFrom).value;
 
 		calculateDirectionWeights(directionWeights, *from);
+
+		if (directionWeights.size() == 0)
+		{
+			weights.at(iMinFrom).value = MAX_WEIGHT;
+			continue;
+		}
+
 		int iMinTo = minIndex(directionWeights);
 		memcpy(to, &directionWeights.at(iMinTo).cell, sizeof(Cell));
 		int weightTo = directionWeights.at(iMinTo).value;
@@ -42,11 +56,6 @@ void Ai::selectCell(Cell* from, Cell* to)
 		if (weightTo > weightFrom)
 		{
 			weights.at(iMinFrom).value = MAX_WEIGHT;
-		}
-		else if (isAllMaxWeight(weights))
-		{
-			searchFirstEmpty(*from, *to);
-			break;
 		}
 		else
 		{
@@ -86,12 +95,26 @@ void Ai::calculateWeights(vector<Weight>& weights)
 void Ai::calculateDirectionWeights(vector<Weight>& directionWeights, const Cell& from)
 {
 	directionWeights.clear();
-
 	Cell directionCells[NUM_DIRECTIONS];
-	directionCells[0] = { from.x, from.y + 1, game->getGameField(from.x, from.y + 1) };
-	directionCells[1] = { from.x, from.y - 1, game->getGameField(from.x, from.y - 1) };
-	directionCells[2] = { from.x + 1, from.y, game->getGameField(from.x + 1, from.y) };
-	directionCells[3] = { from.x - 1, from.y, game->getGameField(from.x - 1, from.y) };
+	array<int, NUM_DIRECTIONS> directions = { from.y + 1, from.y - 1, from.x + 1, from.x - 1 };
+
+	for (size_t i = 0; i < NUM_DIRECTIONS / 2; i++)
+	{
+		int coord = directions.at(i);
+		if (coord >= 0 && coord < SIZE_Y)
+			directionCells[i] = { from.x, coord, game->getGameField(from.x, coord) };
+		else
+			directionCells[i] = { from.x, coord, CellValue::BLACK };
+	}
+
+	for (size_t i = NUM_DIRECTIONS / 2; i < NUM_DIRECTIONS; i++)
+	{
+		int coord = directions.at(i);
+		if (coord >= 0 && coord < SIZE_X)
+			directionCells[i] = { coord, from.y, game->getGameField(coord, from.y) };
+		else
+			directionCells[i] = { coord, from.y, CellValue::BLACK };
+	}
 
 	for (size_t i = 0; i < NUM_DIRECTIONS; i++)
 	{
@@ -99,14 +122,9 @@ void Ai::calculateDirectionWeights(vector<Weight>& directionWeights, const Cell&
 		if (directionCells[i].value == CellValue::EMPTY)
 		{
 			weight.value = calculateWeight(directionCells[i].x, directionCells[i].y);
+			weight.cell = directionCells[i];
+			directionWeights.push_back(weight);
 		}
-		else
-		{
-			weight.value = MAX_WEIGHT;
-		}
-		weight.cell = directionCells[i];
-
-		directionWeights.push_back(weight);
 	}
 }
 
@@ -140,9 +158,10 @@ void Ai::searchFirstEmpty(Cell& from, Cell& to)
 		calculateDirectionWeights(directionWeights, from);
 		for (size_t j = 0; j < directionWeights.size(); j++)
 		{
-			if (directionWeights.at(j).cell.value != CellValue::EMPTY)
+			if (directionWeights.at(j).cell.value == CellValue::EMPTY)
 			{
 				memcpy(&to, &directionWeights.at(j).cell, sizeof(Cell));
+				return;
 			}
 		}
 	}
