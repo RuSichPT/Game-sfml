@@ -12,7 +12,8 @@ enum class CellValue
 {
 	EMPTY,
 	BLACK,
-	WHITE
+	WHITE,
+	NONE
 };
 
 enum class NextMove
@@ -23,7 +24,34 @@ enum class NextMove
 
 struct Cell
 {
-	int x = 0xFFFFFFFF;
-	int y = 0xFFFFFFFF;
-	CellValue value = CellValue::EMPTY;
+	int x = -1;
+	int y = -1;
+	CellValue value = CellValue::NONE;
+
+	void clear()
+	{
+		this->x = -1;
+		this->y = -1;
+		this->value = CellValue::NONE;
+	};
+
+	bool isInit()
+	{
+		return value != CellValue::NONE;
+	}
+	
+	bool isEmpty()
+	{
+		return value != CellValue::EMPTY;
+	}
+
+	bool isBlack()
+	{
+		return value != CellValue::BLACK;
+	}
+
+	bool isWhite()
+	{
+		return value != CellValue::WHITE;
+	}
 };

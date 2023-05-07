@@ -119,7 +119,7 @@ void Ai::calculateDirectionWeights(vector<Weight>& directionWeights, const Cell&
 	for (size_t i = 0; i < NUM_DIRECTIONS; i++)
 	{
 		Weight weight;
-		if (directionCells[i].value == CellValue::EMPTY)
+		if (directionCells[i].isEmpty())
 		{
 			weight.value = calculateWeight(directionCells[i].x, directionCells[i].y);
 			weight.cell = directionCells[i];
@@ -158,7 +158,7 @@ void Ai::searchFirstEmpty(Cell& from, Cell& to)
 		calculateDirectionWeights(directionWeights, from);
 		for (size_t j = 0; j < directionWeights.size(); j++)
 		{
-			if (directionWeights.at(j).cell.value == CellValue::EMPTY)
+			if (directionWeights.at(j).cell.isEmpty())
 			{
 				memcpy(&to, &directionWeights.at(j).cell, sizeof(Cell));
 				return;

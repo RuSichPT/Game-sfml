@@ -14,6 +14,7 @@ Game::Game()
 	view = new GameView(this);
 	handler = new EventHandler(this);
 	ai = new Ai(this);
+	player = new Player(this);
 }
 
 Game::~Game()
@@ -21,6 +22,7 @@ Game::~Game()
 	delete view;
 	delete handler;
 	delete ai;
+	delete player;
 }
 
 void Game::start()
@@ -28,7 +30,14 @@ void Game::start()
 	while (view->getRenderWindow()->isOpen())
 	{
 		handler->handle();
-		ai->act();
+		if (nextMove == NextMove::PLAYER)
+		{
+			player->act();
+		}
+		else if (nextMove == NextMove::AI)
+		{
+			ai->act();
+		}
 		view->drow();
 	}
 }
@@ -94,6 +103,11 @@ bool Game::isEnd()
 	}
 
 	return false;
+}
+
+void Game::clearSelectedCell()
+{
+	selectedCell.clear();
 }
 
 bool Game::canMove(Cell from, Cell to)

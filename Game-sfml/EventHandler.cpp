@@ -19,25 +19,11 @@ void EventHandler::handle()
 			{
 				if (game->getNextMove() == NextMove::PLAYER)
 				{
-					Cell to;
-					to.x = event.mouseButton.x / (int)SIZE_CELL;
-					to.y = event.mouseButton.y / (int)SIZE_CELL;
-					to.value = game->getGameField(to.x, to.y);
-
-					Cell from = game->getSelectedCell();
-					if (from.value != CellValue::EMPTY)
-					{
-						if (game->moveFigure(from, to)) {
-							game->setNextMove(NextMove::AI);
-						}
-						from.value = CellValue::EMPTY;
-					}
-					else
-					{
-						memcpy(&from, &to, sizeof(Cell));
-					}
-					game->setSelectedCell(from);
-					game->printGameField();
+					Cell cell;
+					cell.x = event.mouseButton.x / (int)SIZE_CELL;
+					cell.y = event.mouseButton.y / (int)SIZE_CELL;
+					cell.value = game->getGameField(cell.x, cell.y);
+					game->setSelectedCell(cell);
 				}
 			}
 		}
