@@ -17,14 +17,11 @@ void EventHandler::handle()
 		{
 			if (event.mouseButton.button == Mouse::Left)
 			{
-				if (game->getNextMove() == NextMove::PLAYER)
-				{
-					Cell cell;
-					cell.x = event.mouseButton.x / (int)SIZE_CELL;
-					cell.y = event.mouseButton.y / (int)SIZE_CELL;
-					cell.value = game->getGameField(cell.x, cell.y);
-					game->setSelectedCell(cell);
-				}
+				Cell cell;
+				cell.x = event.mouseButton.x / (int)SIZE_CELL;
+				cell.y = event.mouseButton.y / (int)SIZE_CELL;
+				cell.value = game->getGameField(cell.x, cell.y);
+				game->setSelectedCell(cell);
 			}
 		}
 	}
