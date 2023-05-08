@@ -42,16 +42,16 @@ struct Cell
 	
 	bool isEmpty()
 	{
-		return value != CellValue::EMPTY;
+		return value == CellValue::EMPTY;
 	}
 
 	bool isBlack()
 	{
-		return value != CellValue::BLACK;
+		return value == CellValue::BLACK;
 	}
 
 	bool isWhite()
 	{
-		return value != CellValue::WHITE;
+		return value == CellValue::WHITE;
 	}
 };
