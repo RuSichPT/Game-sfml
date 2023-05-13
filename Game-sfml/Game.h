@@ -13,6 +13,7 @@ class Game
 {
 public:
 	Game();
+	Game(const Game &game);
 	~Game();
 
 	void start();
@@ -48,5 +49,6 @@ private:
 
 	bool canMove(Cell from, Cell to);
 	void initGameField();
+	void initDynamicMemory();
 };
 
