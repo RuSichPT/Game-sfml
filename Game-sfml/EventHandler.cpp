@@ -4,7 +4,7 @@
 
 void EventHandler::handle()
 {
-	RenderWindow* window = game->getGameView()->getRenderWindow();
+	auto window = game->getGameView()->getRenderWindow();
 
 	Event event;
 	while (window->pollEvent(event))

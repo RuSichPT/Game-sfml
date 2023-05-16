@@ -6,6 +6,7 @@
 #include "EventHandler.h"
 #include "Ai.h"
 #include "Player.h"
+#include <memory>
 
 using namespace sf;
 
@@ -13,8 +14,6 @@ class Game
 {
 public:
 	Game();
-	Game(const Game &game);
-	~Game();
 
 	void start();
 	bool moveFigure(Cell from, Cell to);
@@ -28,7 +27,8 @@ public:
 	void setGameField(int numX, int numY, CellValue value) { gameField[numX][numY] = value; }
 	CellValue getGameField(int numX, int numY) { return gameField[numX][numY]; }
 
-	GameView* getGameView() { return view; }
+	shared_ptr<GameView> getGameView() { return view; }
+	shared_ptr<Ai> getAi() { return ai; }
 
 	FigureColor getWinner() { return winner; }
 
@@ -36,19 +36,17 @@ public:
 	NextMove getNextMove() { return nextMove; }
 
 private:
-	GameView* view;
-	EventHandler* handler;
-	Ai* ai;
-	Player* player;
+	shared_ptr<GameView> view;
+	shared_ptr<EventHandler> handler;
+	shared_ptr<Ai> ai;
+	shared_ptr<Player> player;
 
 	Cell selectedCell;
 	CellValue gameField[SIZE_X][SIZE_Y] = { CellValue::EMPTY };
 	FigureColor winner;
 	NextMove nextMove = NextMove::PLAYER;
 
-
 	bool canMove(Cell from, Cell to);
 	void initGameField();
-	void initDynamicMemory();
 };
 

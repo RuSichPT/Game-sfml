@@ -10,19 +10,6 @@ GameView::GameView(Game* game)
 	initFigures();
 }
 
-GameView::~GameView()
-{
-	for (size_t i = 0; i < NUM_FIGURES * NUM_FIGURES; i++)
-	{
-		delete figuresBlack[i];
-		delete figuresWhite[i];
-	}
-
-	delete spriteBackground;
-	delete background;
-	delete window;
-}
-
 void GameView::drow()
 {
 	window->clear(Color::White);
@@ -42,10 +29,10 @@ void GameView::drow()
 
 void GameView::initBackground()
 {
-	background = new Texture();
+	background = make_unique<Texture>();
 	background->loadFromFile("..\\Images\\board.jpg");
 
-	spriteBackground = new Sprite(*background);
+	spriteBackground = make_unique<Sprite>(*background);
 	spriteBackground->setScale(SCALE, SCALE);
 }
 
@@ -54,7 +41,7 @@ void GameView::initRenderWindow()
 	Vector2u sizeField = background->getSize();
 	sizeField.x = unsigned int(sizeField.x * SCALE);
 	sizeField.y = unsigned int(sizeField.y * SCALE);
-	window = new RenderWindow(VideoMode(sizeField.x, sizeField.y), "The Game!");
+	window = make_shared<RenderWindow>(VideoMode(sizeField.x, sizeField.y), "The Game!");
 }
 
 void GameView::initFigures()
@@ -68,12 +55,12 @@ void GameView::initFigures()
 			CellValue cell = game->getGameField(i, j);
 			if (cell == CellValue::BLACK)
 			{
-				figuresBlack[black] = new Figure(FigureColor::BLACK, i, j);
+				figuresBlack.at(black) = make_unique<Figure>(FigureColor::BLACK, i, j);
 				black++;
 			}
 			else if (cell == CellValue::WHITE)
 			{
-				figuresWhite[white] = new Figure(FigureColor::WHITE, i, j);
+				figuresWhite.at(white) = make_unique<Figure>(FigureColor::WHITE, i, j);
 				white++;
 			}
 		}

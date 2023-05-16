@@ -38,7 +38,7 @@ void Ai::selectCell(Cell* from, Cell* to)
 		}
 
 		int iMinFrom = minIndex(weights);
-		memcpy(from, &weights.at(iMinFrom).cell, sizeof(Cell));
+		*from = weights.at(iMinFrom).cell;
 		int weightFrom = weights.at(iMinFrom).value;
 
 		calculateDirectionWeights(directionWeights, *from);
@@ -50,7 +50,7 @@ void Ai::selectCell(Cell* from, Cell* to)
 		}
 
 		int iMinTo = minIndex(directionWeights);
-		memcpy(to, &directionWeights.at(iMinTo).cell, sizeof(Cell));
+		*to = directionWeights.at(iMinTo).cell;
 		int weightTo = directionWeights.at(iMinTo).value;
 
 		if (weightTo > weightFrom)
@@ -66,7 +66,7 @@ void Ai::selectCell(Cell* from, Cell* to)
 
 int Ai::calculateWeight(int x, int y)
 {
-	return x * x + y * y;;
+	return x * x + y * y;
 }
 
 void Ai::calculateWeights(vector<Weight>& weights)
@@ -81,7 +81,7 @@ void Ai::calculateWeights(vector<Weight>& weights)
 
 			if (cellValue == CellValue::WHITE)
 			{
-				Cell cell{ i,j,cellValue };
+				Cell cell{ i, j, cellValue };
 				Weight weight;
 				weight.value = calculateWeight(0 - i, 0 - j);
 				weight.cell = cell;
@@ -95,25 +95,25 @@ void Ai::calculateWeights(vector<Weight>& weights)
 void Ai::calculateDirectionWeights(vector<Weight>& directionWeights, const Cell& from)
 {
 	directionWeights.clear();
-	Cell directionCells[NUM_DIRECTIONS];
+	array<Cell, NUM_DIRECTIONS> directionCells;
 	array<int, NUM_DIRECTIONS> directions = { from.y + 1, from.y - 1, from.x + 1, from.x - 1 };
 
 	for (size_t i = 0; i < NUM_DIRECTIONS / 2; i++)
 	{
 		int coord = directions.at(i);
 		if (coord >= 0 && coord < SIZE_Y)
-			directionCells[i] = { from.x, coord, game->getGameField(from.x, coord) };
+			directionCells.at(i) = { from.x, coord, game->getGameField(from.x, coord) };
 		else
-			directionCells[i] = { from.x, coord, CellValue::BLACK };
+			directionCells.at(i) = { from.x, coord, CellValue::BLACK };
 	}
 
 	for (size_t i = NUM_DIRECTIONS / 2; i < NUM_DIRECTIONS; i++)
 	{
 		int coord = directions.at(i);
 		if (coord >= 0 && coord < SIZE_X)
-			directionCells[i] = { coord, from.y, game->getGameField(coord, from.y) };
+			directionCells.at(i) = { coord, from.y, game->getGameField(coord, from.y) };
 		else
-			directionCells[i] = { coord, from.y, CellValue::BLACK };
+			directionCells.at(i) = { coord, from.y, CellValue::BLACK };
 	}
 
 	for (size_t i = 0; i < NUM_DIRECTIONS; i++)
@@ -154,13 +154,13 @@ void Ai::searchFirstEmpty(Cell& from, Cell& to)
 {
 	for (size_t i = 0; i < weights.size(); i++)
 	{
-		memcpy(&from, &weights.at(i).cell, sizeof(Cell));
+		from = weights.at(i).cell;
 		calculateDirectionWeights(directionWeights, from);
 		for (size_t j = 0; j < directionWeights.size(); j++)
 		{
 			if (directionWeights.at(j).cell.isEmpty())
 			{
-				memcpy(&to, &directionWeights.at(j).cell, sizeof(Cell));
+				to = directionWeights.at(j).cell;
 				return;
 			}
 		}

@@ -10,25 +10,10 @@ Game::Game()
 {
 	initGameField();
 	printGameField();
-	initDynamicMemory();
-}
-
-Game::Game(const Game& game)
-{
-	memcpy(this->gameField, game.gameField, sizeof(game.gameField));
-	initDynamicMemory();
-
-	this->selectedCell = game.selectedCell;
-	this->winner = game.winner;
-	this->nextMove = game.nextMove;
-}
-
-Game::~Game()
-{
-	delete view;
-	delete handler;
-	delete ai;
-	delete player;
+	view = make_shared<GameView>(this);
+	handler = make_shared<EventHandler>(this);
+	ai = make_shared<Ai>(this);
+	player = make_shared<Player>(this);
 }
 
 void Game::start()
@@ -145,12 +130,4 @@ void Game::initGameField()
 			gameField[i][j] = CellValue::WHITE;
 		}
 	}
-}
-
-void Game::initDynamicMemory()
-{
-	view = new GameView(this);
-	handler = new EventHandler(this);
-	ai = new Ai(this);
-	player = new Player(this);
 }

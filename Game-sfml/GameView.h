@@ -4,6 +4,8 @@
 #include "Figure.h"
 #include "Config.h"
 #include <vector>
+#include <memory>
+#include <array>
 
 class Game;
 
@@ -14,18 +16,17 @@ class GameView
 {
 public:
 	GameView(Game* game);
-	~GameView();
 	void drow();
 
-	RenderWindow* getRenderWindow() { return window; }
+	shared_ptr<RenderWindow> getRenderWindow() { return window; }
 private:
 	Game* game;
-	RenderWindow* window;
-	Texture* background;
-	Sprite* spriteBackground;
+	shared_ptr<RenderWindow> window;
+	unique_ptr<Texture> background;
+	unique_ptr<Sprite> spriteBackground;
 
-	Figure* figuresBlack[NUM_FIGURES * NUM_FIGURES] = { nullptr };
-	Figure* figuresWhite[NUM_FIGURES * NUM_FIGURES] = { nullptr };
+	array<unique_ptr<Figure>, NUM_FIGURES* NUM_FIGURES> figuresBlack;
+	array<unique_ptr<Figure>, NUM_FIGURES* NUM_FIGURES> figuresWhite;
 
 	void initBackground();
 	void initRenderWindow();
