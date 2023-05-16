@@ -9,7 +9,7 @@ class Game;
 class EventHandler
 {
 public:
-	EventHandler(Game* game);
+	EventHandler(Game* game) :game{ game } {};
 
 	void handle();
 private:

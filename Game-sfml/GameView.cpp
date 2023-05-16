@@ -1,10 +1,8 @@
 #include "GameView.h"
 #include "Game.h" 
 
-GameView::GameView(Game* game)
+GameView::GameView(Game* game) :game{ game }
 {
-	this->game = game;
-
 	initBackground();
 	initRenderWindow();
 	initFigures();
@@ -78,12 +76,12 @@ void GameView::drowFigures()
 			CellValue cell = game->getGameField(i, j);
 			if (cell == CellValue::BLACK)
 			{
-				figuresBlack[black]->setPosition(i, j);
+				figuresBlack.at(black)->setPosition(i, j);
 				black++;
 			}
 			if (cell == CellValue::WHITE)
 			{
-				figuresWhite[white]->setPosition(i, j);
+				figuresWhite.at(white)->setPosition(i, j);
 				white++;
 			}
 		}
@@ -91,8 +89,8 @@ void GameView::drowFigures()
 
 	for (size_t i = 0; i < NUM_FIGURES * NUM_FIGURES; i++)
 	{
-		window->draw(*figuresBlack[i]->getSprite());
-		window->draw(*figuresWhite[i]->getSprite());
+		window->draw(*figuresBlack.at(i)->getSprite());
+		window->draw(*figuresWhite.at(i)->getSprite());
 	}
 }
 

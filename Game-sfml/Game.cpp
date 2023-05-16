@@ -3,9 +3,6 @@
 #include <iostream>
 #include "EventHandler.h"
 
-using namespace sf;
-using namespace std;
-
 Game::Game()
 {
 	initGameField();
@@ -16,7 +13,7 @@ Game::Game()
 	player = make_shared<Player>(this);
 }
 
-void Game::start()
+void Game::run()
 {
 	while (view->getRenderWindow()->isOpen())
 	{
@@ -33,7 +30,7 @@ void Game::start()
 	}
 }
 
-bool Game::moveFigure(Cell from, Cell to)
+bool Game::moveFigure(const Cell& from, const Cell& to)
 {
 	if (canMove(from, to))
 	{

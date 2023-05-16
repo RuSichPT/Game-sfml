@@ -9,18 +9,19 @@
 #include <memory>
 
 using namespace sf;
+using namespace std;
 
 class Game
 {
 public:
 	Game();
 
-	void start();
-	bool moveFigure(Cell from, Cell to);
+	void run();
+	bool moveFigure(const Cell& from, const Cell& to);
 	void printGameField();
 	bool isEnd();
 
-	void setSelectedCell(Cell& cell) { selectedCell = cell; }
+	void setSelectedCell(const Cell& cell) { selectedCell = cell; }
 	Cell getSelectedCell() { return selectedCell; }
 	void clearSelectedCell();
 

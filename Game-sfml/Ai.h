@@ -22,7 +22,7 @@ private:
 	vector<Weight> weights;
 	vector<Weight> directionWeights;
 
-	void selectCell(Cell* from, Cell* to);
+	void selectCell(Cell& from, Cell& to);
 	void calculateWeights(vector<Weight>& weights);
 	void calculateDirectionWeights(vector<Weight>& directionWeights, const Cell& from);
 	int calculateWeight(int x, int y);

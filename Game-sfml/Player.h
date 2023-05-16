@@ -6,7 +6,7 @@ class Game;
 class Player
 {
 public:
-	Player(Game* game);
+	Player(Game* game) :game{ game } {};
 	void act();
 private:
 	Game* game;

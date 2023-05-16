@@ -8,10 +8,10 @@ constexpr int NUM_DIRECTIONS = 4;
 constexpr int MAX_WEIGHT = SIZE_X * SIZE_Y * 2;
 
 Ai::Ai(Game* game)
+	:game{ game }
 {
-	this->game = game;
 	weights.reserve(NUM_FIGURES * NUM_FIGURES);
-	directionWeights.reserve(4);
+	directionWeights.reserve(NUM_DIRECTIONS);
 }
 
 void Ai::act()
@@ -19,13 +19,13 @@ void Ai::act()
 	if (game->getNextMove() == NextMove::AI)
 	{
 		Cell from, to;
-		selectCell(&from, &to);
+		selectCell(from, to);
 		game->moveFigure(from, to);
 		game->setNextMove(NextMove::PLAYER);
 	}
 }
 
-void Ai::selectCell(Cell* from, Cell* to)
+void Ai::selectCell(Cell& from, Cell& to)
 {
 	calculateWeights(weights);
 
@@ -33,15 +33,15 @@ void Ai::selectCell(Cell* from, Cell* to)
 	{
 		if (isAllMaxWeight(weights))
 		{
-			searchFirstEmpty(*from, *to);
+			searchFirstEmpty(from, to);
 			break;
 		}
 
 		int iMinFrom = minIndex(weights);
-		*from = weights.at(iMinFrom).cell;
+		from = weights.at(iMinFrom).cell;
 		int weightFrom = weights.at(iMinFrom).value;
 
-		calculateDirectionWeights(directionWeights, *from);
+		calculateDirectionWeights(directionWeights, from);
 
 		if (directionWeights.size() == 0)
 		{
@@ -50,7 +50,7 @@ void Ai::selectCell(Cell* from, Cell* to)
 		}
 
 		int iMinTo = minIndex(directionWeights);
-		*to = directionWeights.at(iMinTo).cell;
+		to = directionWeights.at(iMinTo).cell;
 		int weightTo = directionWeights.at(iMinTo).value;
 
 		if (weightTo > weightFrom)
@@ -131,9 +131,9 @@ void Ai::calculateDirectionWeights(vector<Weight>& directionWeights, const Cell&
 int Ai::minIndex(const vector<Weight>& weights)
 {
 	auto minIter = min_element(weights.begin(), weights.end(), [](Weight first, Weight second)
-	{
-		return first.value < second.value;
-	});
+		{
+			return first.value < second.value;
+		});
 
 	return std::distance(std::begin(weights), minIter);
 }

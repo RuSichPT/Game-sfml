@@ -2,8 +2,10 @@
 
 #include <SFML/Graphics.hpp>
 #include "Config.h"
+#include <memory>
 
 using namespace sf;
+using namespace std;
 
 enum class FigureColor
 {
@@ -15,14 +17,13 @@ class Figure
 {
 public:
 	Figure(FigureColor color, int numCellX, int numCellY);
-	~Figure();
 
 	void setPosition(int newNumCellX, int newNumCellY);
-	Sprite* getSprite() { return sprite; };
+	shared_ptr<Sprite> getSprite() { return sprite; };
 	FigureColor getColor() { return color; };
 private:
-	Texture* texture;
-	Sprite* sprite;
+	unique_ptr<Texture> texture;
+	shared_ptr<Sprite> sprite;
 	FigureColor color;
 
 	int numCellX;

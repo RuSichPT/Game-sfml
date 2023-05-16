@@ -1,11 +1,6 @@
 #include "Player.h"
 #include "Game.h"
 
-Player::Player(Game* game)
-{
-	this->game = game;
-}
-
 void Player::act()
 {
 	Cell selectedCell = game->getSelectedCell();

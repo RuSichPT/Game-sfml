@@ -27,8 +27,3 @@ void EventHandler::handle()
 	}
 }
 
-EventHandler::EventHandler(Game* game)
-{
-	this->game = game;
-}
-
