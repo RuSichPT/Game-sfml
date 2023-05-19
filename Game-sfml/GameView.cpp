@@ -37,8 +37,8 @@ void GameView::initBackground()
 void GameView::initRenderWindow()
 {
 	Vector2u sizeField = background->getSize();
-	sizeField.x = unsigned int(sizeField.x * SCALE);
-	sizeField.y = unsigned int(sizeField.y * SCALE);
+	sizeField.x = (unsigned int)(sizeField.x * SCALE);
+	sizeField.y = (unsigned int)(sizeField.y * SCALE);
 	window = make_shared<RenderWindow>(VideoMode(sizeField.x, sizeField.y), "The Game!");
 }
 
